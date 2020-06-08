@@ -1,0 +1,51 @@
+- table:
+    schema: public
+    name: logins
+  configuration:
+    custom_root_fields:
+      insert: insertLogins
+      select_aggregate: loginsAggregate
+      insert_one: insertLogin
+      select_by_pk: loginsByPk
+      delete: deleteLogins
+      update: updatesLogins
+      delete_by_pk: deleteLoginsByPk
+      update_by_pk: updateLoginsByPk
+    custom_column_names:
+      updated_at: updatedAt
+      created_at: createdAt
+    - role: anonymous
+      permission:
+        check: {}
+        columns:
+          - data
+          - ip
+        backend_only: false
+  select_permissions:
+    - role: anonymous
+      permission:
+        columns:
+          - ip
+        filter:
+          uuid:
+            _eq: x-hasura-login-uuid
+          _eq: x-hasura-login-uuid
+- table:
+    schema: public
+    name: users
+  configuration:
+    custom_root_fields:
+      insert: insertUsers
+      select_aggregate: usersAggregate
+      insert_one: insertUser
+      select_by_pk: usersByPk
+      delete: deleteUsers
+      update: updateUsers
+      delete_by_pk: deleteUsersByPk
+      update_by_pk: updateUsersByPk
+    custom_column_names:
+      firebase_id: firebaseId
+      email_verified: emailVerified
+      updated_at: updatedAt
+      created_at: createdAt
+      firebase_user: firebaseUser

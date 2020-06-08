@@ -1,0 +1,15 @@
+actions:
+- name: signup
+  definition:
+    kind: synchronous
+    handler: http://test
+    forward_client_headers: true
+custom_types:
+  enums: []
+  input_objects:
+  - name: SignupInput
+  objects:
+  - name: UserInfo
+  - name: SignupOutput
+  scalars:
+  - name: Email

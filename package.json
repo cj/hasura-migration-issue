@@ -1,0 +1,211 @@
+{
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "dev": "run-p env expo:web firebase:functions:serve hasura:start hasura:console",
+    "android": "dotenv-load react-native run-android",
+    "ios": "dotenv-load react-native run-ios",
+    "env": "onchange -i -k '.env*' -- esm-ts-node scripts/env",
+    "env:build": "esm-ts-node scripts/env",
+    "client:android": "dotenv-load expo client:install:android",
+    "client:ios": "dotenv-load expo client:install:ios",
+    "build:android": "dotenv-load expo build:android",
+    "build:ios": "dotenv-load expo build:ios",
+    "expo:start": "dotenv-load expo start",
+    "expo:web": "dotenv-load expo start --web",
+    "lint": "eslint \"**/*.{js,jsx,ts,tsx}\" --ignore-path=.gitignore",
+    "lint:fix": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix --ignore-path=.gitignore",
+    "start": "react-native start",
+    "firebase:functions:serve": "cd functions && yarn serve",
+    "firebase:functions:deploy": "cd functions && yarn deploy",
+    "docker-compose": "dotenv-load docker-compose",
+    "hasura:start": "dotenv-load yarn docker-compose up",
+    "hasura:stop": "dotenv-load yarn docker-compose down",
+    "hasura:console": "dotenv-load wait-on http-get://localhost:\\$HASURA_GRAPHQL_PORT/v1/version && dotenv-load hasura console --no-browser --admin-secret \\$HASURA_GRAPHQL_ADMIN_SECRET --endpoint \\$HASURA_GRAPHQL_CONSOLE_ENDPOINT --console-port \\$HASURA_GRAPHQL_CONSOLE_PORT",
+    "postinstall": "patch-package",
+    "test": "jest"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "printWidth": 100,
+    "trailingComma": "es5",
+    "bracketSpacing": false,
+    "tabWidth": 2,
+    "jsxBracketSameLine": true
+  },
+  "eslintConfig": {
+    "extends": [
+      "airbnb",
+      "airbnb/hooks",
+      "universe/native",
+      "universe/node",
+      "universe/web",
+      "universe/shared/typescript-analysis",
+      "plugin:import/errors",
+      "plugin:import/warnings",
+      "plugin:import/typescript"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "*.ts",
+          "*.tsx",
+          "*.d.ts"
+        ],
+        "parserOptions": {
+          "project": "./tsconfig.json"
+        }
+      },
+      {
+        "files": [
+          "functions/**/*.ts",
+          "functions/**/*.tsx"
+        ],
+        "rules": {
+          "import/prefer-default-export": "off",
+          "import/default": "off"
+        }
+      },
+      {
+        "files": [
+          "tests/**/*.ts",
+          "tests/**/*.tsx"
+        ],
+        "rules": {
+          "import/no-extraneous-dependencies": "off"
+        }
+      }
+    ],
+    "rules": {
+      "react/jsx-filename-extension": [
+        "error",
+        {
+          "extensions": [
+            ".js",
+            ".jsx",
+            ".ts",
+            ".tsx"
+          ]
+        }
+      ],
+      "react/jsx-props-no-spreading": "off",
+      "no-use-before-define": "off",
+      "import/extensions": [
+        "error",
+        "ignorePackages",
+        {
+          "ts": "never",
+          "tsx": "never",
+          "js": "never",
+          "jsx": "never",
+          "mjs": "never"
+        }
+      ]
+    },
+    "settings": {
+      "import/resolver": {
+        "typescript": {}
+      },
+      "import/ignore": [
+        "react"
+      ]
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.{css,md,scss}": "prettier --write",
+    "**/*.{js,jsx,ts,tsx}": "eslint --fix"
+  },
+  "jest": {
+    "preset": "jest-expo",
+    "transformIgnorePatterns": [
+      "node_modules/(?!(jest-)?react-native|@react-native-community|react-navigation|@ui-kitten)"
+    ],
+    "testMatch": [
+      "**/(__tests__|tests)/**/*.ts?(x)",
+      "**/?(*.)+(spec|test).ts?(x)"
+    ],
+    "cacheDirectory": ".jest"
+  },
+  "dependencies": {
+    "@eva-design/eva": "^2.0.0",
+    "@ui-kitten/components": "^5.0.0",
+    "@ui-kitten/eva-icons": "^5.0.0",
+    "@xstate/react": "^0.8.1",
+    "expo": "^37.0.0",
+    "expo-updates": "~0.2.1",
+    "firebase": "7.9.0",
+    "mitt": "^1.2.0",
+    "patch-package": "^6.2.2",
+    "react": "16.9.0",
+    "react-dom": "16.9.0",
+    "react-hook-form": "^5.7.2",
+    "react-native": "0.61.4",
+    "react-native-gesture-handler": "~1.6.0",
+    "react-native-keyboard-aware-scroll-view": "^0.9.1",
+    "react-native-password-strength-meter": "^0.0.3",
+    "react-native-reanimated": "~1.7.0",
+    "react-native-root-toast": "^3.2.1",
+    "react-native-safe-area-context": "0.7.3",
+    "react-native-screens": "~2.2.0",
+    "react-native-svg": "11.0.1",
+    "react-native-unimodules": "~0.8.1",
+    "react-native-web": "^0.11.7",
+    "xstate": "^4.10.0",
+    "yup": "^0.29.1"
+  },
+  "devDependencies": {
+    "@babel/core": "~7.10.2",
+    "@expo/webpack-config": "^0.11.25",
+    "@types/dot-object": "^2.1.1",
+    "@types/dotenv-flow": "^3.0.0",
+    "@types/jest": "^25.2.3",
+    "@types/react": "^16.9.11",
+    "@types/react-native": "^0.60.22",
+    "@types/react-test-renderer": "^16.9.2",
+    "@types/styled-components": "^5.1.0",
+    "@types/yup": "^0.29.2",
+    "@typescript-eslint/eslint-plugin": "^3.1.0",
+    "@typescript-eslint/parser": "^3.1.0",
+    "babel-plugin-module-resolver": "^4.0.0",
+    "babel-preset-expo": "^8.1.0",
+    "dot-object": "^2.1.3",
+    "dotenv-flow": "^3.1.0",
+    "dotenv-load": "^2.0.0",
+    "eslint": "7.1.0",
+    "eslint-config-airbnb": "18.1.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-config-universe": "^3.0.1",
+    "eslint-import-resolver-typescript": "^2.0.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react-hooks": "4.0.4",
+    "esm": "^3.2.25",
+    "esm-ts-node": "^1.0.5",
+    "expo-optimize": "^0.1.32",
+    "hasura-cli": "^1.2.2",
+    "husky": "^4.2.5",
+    "jest": "^26.0.1",
+    "jest-expo": "^37.0.0",
+    "lint-staged": "^10.2.9",
+    "npm-check-updates": "^6.0.1",
+    "npm-run-all": "^4.1.5",
+    "onchange": "^7.0.2",
+    "prettier": "^2.0.5",
+    "react-addons-test-utils": "^15.6.2",
+    "react-devtools": "v4",
+    "sharp-cli": "^1.14.0",
+    "ts-jest": "^26.1.0",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.8.3",
+    "wait-on": "^5.0.0",
+    "write-json-file": "^4.3.0"
+  }
+}

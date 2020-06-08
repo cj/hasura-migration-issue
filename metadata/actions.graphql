@@ -1,0 +1,26 @@
+type Mutation {
+  signup (
+    user: SignupInput!
+  ): SignupOutput
+}
+
+
+
+
+input SignupInput {
+  name : String!
+  email : Email!
+  password : String!
+}
+
+type UserInfo {
+  accessToken : String!
+  userId : Int!
+}
+
+type SignupOutput {
+  jwt : String!
+}
+
+scalar Email
+
